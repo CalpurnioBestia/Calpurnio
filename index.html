@@ -3,49 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home Page Giornali Internazionali</title>
+  <title>Home Page Giornali</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#f5f7fb; --surface:#ffffff; --surface-2:#eef3fb; --text:#142033; --muted:#5c6b80; --border:#d8e1ec; --primary:#0b6bcb; --primary-soft:#eaf2ff; --shadow:0 12px 32px rgba(15,23,42,.08); --radius:20px;
+      --bg:#f5f7fb;
+      --surface:#ffffff;
+      --surface-2:#eef3fb;
+      --text:#142033;
+      --muted:#5c6b80;
+      --border:#d8e1ec;
+      --primary:#0b6bcb;
+      --primary-soft:#eaf2ff;
+      --shadow:0 12px 32px rgba(15,23,42,.08);
+      --radius:20px;
+      --good:#0f9d58;
     }
+
     [data-theme="dark"] {
-      --bg:#0e1623; --surface:#152133; --surface-2:#1d2a3e; --text:#edf3fb; --muted:#a6b4c8; --border:#2a3a52; --primary:#65a8ff; --primary-soft:#17304d; --shadow:0 12px 32px rgba(0,0,0,.28);
+      --bg:#0e1623;
+      --surface:#152133;
+      --surface-2:#1d2a3e;
+      --text:#edf3fb;
+      --muted:#a6b4c8;
+      --border:#2a3a52;
+      --primary:#65a8ff;
+      --primary-soft:#17304d;
+      --shadow:0 12px 32px rgba(0,0,0,.28);
+      --good:#54c47a;
     }
-    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(180deg,var(--bg),var(--surface-2));color:var(--text)}
-    a{color:inherit} .wrap{max-width:1580px;margin:0 auto;padding:20px}
-    .top{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:18px}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .hero{padding:24px}.hero h1{margin:0 0 10px;font-size:clamp(30px,4vw,50px);line-height:1.02}.hero p{margin:0;color:var(--muted);max-width:75ch}
-    .controls{display:grid;grid-template-columns:1fr 210px 180px auto;gap:12px;margin-top:18px}
-    input,select,button{font:inherit;border-radius:14px;border:1px solid var(--border);padding:12px 14px;background:var(--surface);color:var(--text)}
-    button{cursor:pointer;font-weight:700;border:none;background:var(--primary);color:#fff}.ghost{background:var(--primary-soft);color:var(--primary);border:1px solid var(--border)}
-    .quick{padding:18px;display:flex;flex-direction:column;gap:12px}.quick h2{margin:0;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;border-radius:999px;font-weight:700}
-    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px}.stat small{display:block;color:var(--muted);margin-bottom:6px}.stat strong{font-size:26px}
-    .italy{padding:18px;margin-bottom:18px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.section-title h2{margin:0;font-size:24px}.section-title p{margin:0;color:var(--muted)}
-    .featured-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-    .favorite{min-height:110px;padding:18px;border-radius:18px;background:linear-gradient(180deg,var(--surface),var(--surface-2));}
-    .favorite .logo{width:48px;height:48px}
-    .favorite .logo img{width:28px;height:28px}
-    .favorite .paper-text strong{font-size:16px}
-    .favorite .paper-text span{font-size:13px}
-    .paper{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px;border:1px solid var(--border);background:var(--surface);border-radius:16px;min-height:78px;transition:.18s ease}
-    .paper:hover{transform:translateY(-2px);border-color:var(--primary);background:var(--primary-soft)}
-    .logo,.flag{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);flex:0 0 auto;overflow:hidden}
-    .logo img,.flag img{width:24px;height:24px;object-fit:contain}
-    .paper-text{min-width:0}.paper-text strong{display:block;font-size:14px;line-height:1.25}.paper-text span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .layout{display:grid;grid-template-columns:280px 1fr;gap:18px}
-    .sidebar{padding:18px;position:sticky;top:16px;height:fit-content}.sidebar h3{margin:0 0 12px}.country-nav{display:grid;gap:8px;max-height:70vh;overflow:auto}
-    .country-nav a{text-decoration:none;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);font-weight:600}
-    .main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
-    .country{overflow:hidden}.country-header{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface-2)}
-    .country-header h3{margin:0;font-size:18px}.country-header small{display:block;color:var(--muted)}
-    .links{padding:10px;display:grid;gap:8px;max-height:640px;overflow:auto}
-    .empty{display:none;padding:32px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--border);border-radius:16px}
-    @media (max-width:1250px){.main{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{grid-template-columns:1fr 1fr}.top,.layout{grid-template-columns:1fr}.sidebar{position:static}}
-    @media (max-width:760px){.main,.stats,.featured-grid,.controls{grid-template-columns:1fr}.wrap{padding:12px}}
+
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      font-family:'Inter',sans-serif;
+      background:linear-gradient(180deg,var(--bg),var(--surface-2));
+      color:var(--text);
+    }
+
+    a { color:inherit; }
+    .wrap {
+      max-width:1580px;
+      margin:0 auto;
+      padding:20px;
+    }
+
+    .top { display:block; margin-bottom:18px; }
+
+    .card {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .hero { padding:24px; }
+    .hero h1 {
+      margin:0 0 10px;
+      font-size:clamp(30px,4vw,50px);
+      line-height:1.02;
+    }
+    .hero p { margin:0; color:var(--muted); max-width:75ch; }
+
+    .controls {
+      display:grid;
+      grid-template-columns:1fr 210px 180px auto;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    input, select, button {
+      font:inherit;
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:12px 14px;
+      background:var(--surface);
+      color:var(--text);
+    }
+
+    button {
+      cursor:pointer;
+      font-weight:700;
+      border:none;
+      background:var(--primary);
+      color:#fff;
+    }
+
+    .ghost {
+      background:var(--primary-soft);
+      color:var(--primary);
+      border:1px solid var(--border);
+    }
+
+    .italy { padding:18px; margin-bottom:18px; }
+
+    .section-title {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .section-title h2 { margin:0; font-size:24px; }
+    .section-title p { margin:0; color:var(--muted); }
+
+    .featured-grid {
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .paper {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      padding:14px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      border-radius:16px;
+      min-height:78px;
+      transition:.18s ease;
+    }
+
+    .paper:hover {
+      transform:translateY(-2px);
+      border-color:var(--primary);
+      background:var(--primary-soft);
+    }
+
+    .logo, .flag, .radio-badge {
+      width:40px;
+      height:40px;
+      display:grid;
+      place-items:center;
+      border-radius:12px;
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      flex:0 0 auto;
+      overflow:hidden;
+    }
+
+    .logo img, .flag img {
+      width:24px;
+      height:24px;
+      object-fit:contain;
+    }
+
+    .paper-text { min-width:0; }
+    .paper-text strong {
+      display:block;
+      font-size:14px;
+      line-height:1.25;
+    }
+    .paper-text span {
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .layout {
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:18px;
+    }
+
+    .sidebar {
+      padding:18px;
+      position:sticky;
+      top:16px;
+      height:fit-content;
+    }
+
+    .sidebar h3 { margin:0 0 12px; }
+
+    .country-nav {
+      display:grid;
+      gap:8px;
+      max-height:70vh;
+      overflow:auto;
+    }
+
+    .country-nav a {
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:12px;
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      font-weight:600;
+    }
+
+    .main {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      align-items:start;
+    }
+
+    .country { overflow:hidden; }
+
+    .country-header {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:16px 18px;
+      border-bottom:1px solid var(--border);
+      background:var(--surface-2);
+    }
+
+    .country-header h3 { margin:0; font-size:18px; }
+    .country-header small { display:block; color:var(--muted); }
+
+    .links {
+      padding:10px;
+      display:grid;
+      gap:8px;
+      grid-template-rows:repeat(3, minmax(0, 1fr));
+      max-height:calc(3 * 78px + 2 * 8px + 20px);
+      overflow:auto;
+    }
+
+    .empty {
+      display:none;
+      padding:32px;
+      text-align:center;
+      color:var(--muted);
+      background:var(--surface);
+      border:1px dashed var(--border);
+      border-radius:16px;
+    }
+
+    .radios {
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .radio-grid {
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .radio-card {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      padding:14px 16px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      border-radius:16px;
+      min-height:96px;
+      transition:.18s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .radio-card:hover {
+      transform:translateY(-2px);
+      border-color:var(--primary);
+      background:var(--primary-soft);
+    }
+
+    .radio-card strong {
+      display:block;
+      font-size:14px;
+      line-height:1.25;
+    }
+
+    .radio-card span {
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .radio-badge {
+      font-weight:800;
+      color:var(--primary);
+      flex-shrink:0;
+    }
+
+    .podcast-badge { font-size:18px; }
+
+    .player-actions {
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .play-btn {
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      padding:8px 12px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .stop-btn {
+      background:var(--surface-2);
+      color:var(--text);
+      border:1px solid var(--border);
+      padding:8px 12px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .status {
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .radio-card.playing {
+      border-color:var(--good);
+      background:linear-gradient(180deg,var(--surface),var(--primary-soft));
+    }
+
+    .radio-card.playing .status {
+      color:var(--good);
+      font-weight:700;
+    }
+
+    @media (max-width:1250px) {
+      .main { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .featured-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .controls { grid-template-columns:1fr 1fr; }
+      .top, .layout { grid-template-columns:1fr; }
+      .sidebar { position:static; }
+      .radio-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+
+    @media (max-width:760px) {
+      .main, .featured-grid, .controls, .radio-grid { grid-template-columns:1fr; }
+      .wrap { padding:12px; }
+    }
+
+    audio { display:none; }
   </style>
 </head>
 <body>
@@ -68,30 +373,70 @@
           <button id="themeToggle" class="ghost" type="button">Tema</button>
         </div>
       </div>
-      <aside class="card quick">
-        <h2>Accesso rapido</h2>
-        <div class="chips" id="topItalian"></div>
-      </aside>
     </section>
 
-    <section class="card italy" id="favoritesSection">
+    <section class="card radios">
       <div class="section-title">
         <div>
-          <h2>Preferiti</h2>
-          <p>Pulsanti grandi per aprire subito le testate principali che vuoi avere sempre a portata di mano.</p>
+          <h2>Radio e podcast</h2>
+          <p>Ascolto rapido senza cambiare pagina.</p>
         </div>
       </div>
-      <div id="favoritesGrid" class="featured-grid"></div>
-    </section>
 
-    <section class="stats" aria-label="Statistiche pagina">
-    </section>
+      <div class="radio-grid">
+        <div class="radio-card" data-stream="radio1">
+          <div class="radio-badge">1</div>
+          <div>
+            <strong>Rai Radio 1</strong>
+            <span>Diretta</span>
+            <div class="player-actions">
+              <button class="play-btn" type="button">Play</button>
+              <button class="stop-btn" type="button">Stop</button>
+            </div>
+            <div class="status">Pronto</div>
+          </div>
+        </div>
 
-    <section class="stats" aria-label="Statistiche pagina">
-      <div class="card stat"><small>Paesi visibili</small><strong id="countryCount">0</strong></div>
-      <div class="card stat"><small>Testate visibili</small><strong id="paperCount">0</strong></div>
-      <div class="card stat"><small>Giornali italiani</small><strong id="italyCount">0</strong></div>
-      <div class="card stat"><small>Aree geografiche</small><strong>2</strong></div>
+        <div class="radio-card" data-stream="radio2">
+          <div class="radio-badge">2</div>
+          <div>
+            <strong>Rai Radio 2</strong>
+            <span>Diretta</span>
+            <div class="player-actions">
+              <button class="play-btn" type="button">Play</button>
+              <button class="stop-btn" type="button">Stop</button>
+            </div>
+            <div class="status">Pronto</div>
+          </div>
+        </div>
+
+        <div class="radio-card" data-stream="radio3">
+          <div class="radio-badge">3</div>
+          <div>
+            <strong>Rai Radio 3</strong>
+            <span>Diretta</span>
+            <div class="player-actions">
+              <button class="play-btn" type="button">Play</button>
+              <button class="stop-btn" type="button">Stop</button>
+            </div>
+            <div class="status">Pronto</div>
+          </div>
+        </div>
+
+        <div class="radio-card" data-stream="podcast">
+          <div class="radio-badge podcast-badge">🎙️</div>
+          <div>
+            <strong>Elisa True Crime</strong>
+            <span>Podcast</span>
+            <div class="player-actions">
+              <button class="play-btn" type="button">Apri</button>
+            </div>
+            <div class="status">Spotify</div>
+          </div>
+        </div>
+      </div>
+
+      <audio id="audioPlayer" preload="none"></audio>
     </section>
 
     <section class="card italy">
@@ -119,6 +464,13 @@
   <script>
     const defaultIcon = 'https://cdn.simpleicons.org/googlenews';
     const flagBase = 'https://flagcdn.com';
+    const streams = {
+      radio1: 'https://icestreaming.rai.it/1.mp3',
+      radio2: 'https://icestreaming.rai.it/2.mp3',
+      radio3: 'https://icestreaming.rai.it/3.mp3'
+    };
+    const podcastUrl = 'https://open.spotify.com/show/5qrDv6O8ON44pXR70z4lPz';
+
     const countries = {
       "Italia": { area:"Europa", flag:"it", items:[
         ["ANSA","https://www.ansa.it","ansible"],["Corriere della Sera","https://www.corriere.it","googlenews"],["La Repubblica","https://www.repubblica.it","googlenews"],["Il Sole 24 Ore","https://www.ilsole24ore.com","googlenews"],["La Stampa","https://www.lastampa.it","googlenews"],["Il Messaggero","https://www.ilmessaggero.it","googlenews"],["Il Gazzettino","https://www.ilgazzettino.it","googlenews"],["Avvenire","https://www.avvenire.it","googlenews"],["La Nazione","https://www.lanazione.it","googlenews"],["Il Resto del Carlino","https://www.ilrestodelcarlino.it","googlenews"],["Il Giorno","https://www.ilgiorno.it","googlenews"],["Libero","https://www.liberoquotidiano.it","googlenews"],["Il Fatto Quotidiano","https://www.ilfattoquotidiano.it","googlenews"],["Domani","https://www.domani.it","googlenews"],["Il Mattino","https://www.ilmattino.it","googlenews"]
@@ -147,14 +499,6 @@
       "Stati Uniti": { area:"Nord America", flag:"us", items:[["Chicago Sun-Times","https://chicago.suntimes.com","googlenews"],["Chicago Tribune","https://www.chicagotribune.com","googlenews"],["Los Angeles Times","https://www.latimes.com","googlenews"],["Miami Herald","https://www.miamiherald.com","googlenews"],["New York Daily News","https://www.nydailynews.com","googlenews"],["New York Post","https://nypost.com","nypost"],["New York Times","https://www.nytimes.com","nytimes"],["Politico","https://www.politico.com","politico"],["San Diego Union-Tribune","https://www.sandiegouniontribune.com","googlenews"],["San Francisco Chronicle","https://www.sfchronicle.com","googlenews"],["Star Tribune","https://www.startribune.com","googlenews"],["The Atlantic","https://www.theatlantic.com","theatlantic"],["The Boston Globe","https://www.bostonglobe.com","googlenews"],["The Columbus Dispatch","https://www.dispatch.com","googlenews"],["The Kansas City Star","https://www.kansascity.com","googlenews"],["The New Yorker","https://www.newyorker.com","newyorker"],["The Philadelphia Inquirer","https://www.inquirer.com","googlenews"],["The Sacramento Bee","https://www.sacbee.com","googlenews"],["The Seattle Times","https://www.seattletimes.com","googlenews"],["The Wall Street Journal","https://www.wsj.com","wsj"],["The Washington Post","https://www.washingtonpost.com","washingtonpost"],["The Washington Times","https://www.washingtontimes.com","googlenews"],["Time","https://time.com","time"],["USA Today","https://www.usatoday.com","usatoday"]]}
     };
 
-    const topItalianNames = ["Corriere della Sera","La Repubblica","Il Sole 24 Ore","La Stampa","Il Fatto Quotidiano","ANSA"];
-    const favorites = [
-      ["Corriere della Sera", "https://www.corriere.it", "googlenews", "Italia"],
-      ["La Repubblica", "https://www.repubblica.it", "googlenews", "Italia"],
-      ["Il Sole 24 Ore", "https://www.ilsole24ore.com", "googlenews", "Italia"],
-      ["ANSA", "https://www.ansa.it", "ansible", "Italia"],
-      ["New York Times", "https://www.nytimes.com", "nytimes", "Stati Uniti"]
-    ];
     const searchInput = document.getElementById('searchInput');
     const areaFilter = document.getElementById('areaFilter');
     const sortMode = document.getElementById('sortMode');
@@ -163,11 +507,10 @@
     const countryNav = document.getElementById('countryNav');
     const emptyState = document.getElementById('emptyState');
     const italyGrid = document.getElementById('italyGrid');
-    const favoritesGrid = document.getElementById('favoritesGrid');
-    const topItalian = document.getElementById('topItalian');
-    const countryCount = document.getElementById('countryCount');
-    const paperCount = document.getElementById('paperCount');
-    const italyCount = document.getElementById('italyCount');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const radios = [...document.querySelectorAll('.radio-card[data-stream]')];
+
+    let currentPlaying = null;
 
     function compareText(a, b, mode='az') {
       const result = a.localeCompare(b, 'it', { sensitivity: 'base' });
@@ -182,31 +525,12 @@
       return code === 'eu' ? 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg' : `${flagBase}/${code}.svg`;
     }
 
-    function renderTopItalian() {
-      const items = countries['Italia'].items.filter(([name]) => topItalianNames.includes(name)).sort((a,b) => compareText(a[0], b[0], 'az'));
-      topItalian.innerHTML = items.map(([name, url, slug]) => `
-        <a class="chip" href="${url}" target="_blank" rel="noopener noreferrer">
-          <img src="${iconUrl(slug || 'googlenews')}" alt="" width="18" height="18" loading="lazy">
-          <span>${name}</span>
-        </a>`).join('');
-    }
-
     function renderItalySection(mode) {
       const items = [...countries['Italia'].items].sort((a,b) => compareText(a[0], b[0], mode));
       italyGrid.innerHTML = items.map(([name, url, slug]) => `
         <a class="paper" href="${url}" target="_blank" rel="noopener noreferrer">
           <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
           <div class="paper-text"><strong>${name}</strong><span>Italia</span></div>
-        </a>`).join('');
-      italyCount.textContent = items.length;
-    }
-
-
-    function renderFavorites() {
-      favoritesGrid.innerHTML = favorites.map(([name, url, slug, country]) => `
-        <a class="paper favorite" href="${url}" target="_blank" rel="noopener noreferrer">
-          <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="28" height="28" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
-          <div class="paper-text"><strong>${name}</strong><span>${country}</span></div>
         </a>`).join('');
     }
 
@@ -217,7 +541,6 @@
       mainGrid.innerHTML = '';
       countryNav.innerHTML = '';
       let visibleCountries = 0;
-      let visiblePapers = 0;
 
       const entries = Object.entries(countries)
         .filter(([country]) => country !== 'Italia')
@@ -231,7 +554,6 @@
         if (!items.length) continue;
 
         visibleCountries++;
-        visiblePapers += items.length;
         const id = `country-${country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 
         const navLink = document.createElement('a');
@@ -257,21 +579,94 @@
         mainGrid.appendChild(section);
       }
 
-      countryCount.textContent = visibleCountries;
-      paperCount.textContent = visiblePapers + countries['Italia'].items.length;
       emptyState.style.display = visibleCountries ? 'none' : 'block';
       renderItalySection(mode);
     }
 
+    function setPlaying(card, label) {
+      radios.forEach(r => r.classList.remove('playing'));
+      if (card) card.classList.add('playing');
+      card.querySelector('.status').textContent = label;
+    }
+
+    radios.forEach(card => {
+      const playBtn = card.querySelector('.play-btn');
+      const stopBtn = card.querySelector('.stop-btn');
+      const key = card.dataset.stream;
+
+      playBtn.addEventListener('click', async () => {
+        if (key === 'podcast') {
+          window.open(podcastUrl, '_blank', 'noopener');
+          return;
+        }
+
+        const url = streams[key];
+        if (!url) return;
+
+        if (currentPlaying === key && !audioPlayer.paused) {
+          audioPlayer.pause();
+          setPlaying(card, 'In pausa');
+          playBtn.textContent = 'Play';
+          currentPlaying = null;
+          return;
+        }
+
+        audioPlayer.src = url;
+        try {
+          await audioPlayer.play();
+          currentPlaying = key;
+          radios.forEach(r => {
+            const btn = r.querySelector('.play-btn');
+            if (r === card) {
+              btn.textContent = 'Pause';
+              setPlaying(r, 'In riproduzione');
+            } else {
+              btn.textContent = 'Play';
+              r.classList.remove('playing');
+              const s = r.querySelector('.status');
+              if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
+            }
+          });
+        } catch (e) {
+          setPlaying(card, 'Riproduzione non avviata');
+        }
+      });
+
+      stopBtn?.addEventListener('click', () => {
+        if (key === 'podcast') return;
+        audioPlayer.pause();
+        audioPlayer.removeAttribute('src');
+        audioPlayer.load();
+        currentPlaying = null;
+        radios.forEach(r => {
+          r.classList.remove('playing');
+          const btn = r.querySelector('.play-btn');
+          if (btn) btn.textContent = 'Play';
+          const s = r.querySelector('.status');
+          if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
+        });
+      });
+    });
+
+    audioPlayer.addEventListener('ended', () => {
+      currentPlaying = null;
+      radios.forEach(r => {
+        const btn = r.querySelector('.play-btn');
+        if (btn) btn.textContent = 'Play';
+        r.classList.remove('playing');
+        const s = r.querySelector('.status');
+        if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
+      });
+    });
+
     themeToggle.addEventListener('click', () => {
       document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     });
+
     searchInput.addEventListener('input', render);
     areaFilter.addEventListener('change', render);
     sortMode.addEventListener('change', render);
 
-    renderTopItalian();
-    renderFavorites();
     render();
   </script>
 </body>
