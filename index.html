@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Page Giornali Internazionali</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f5f7fb; --surface:#ffffff; --surface-2:#eef3fb; --text:#142033; --muted:#5c6b80; --border:#d8e1ec; --primary:#0b6bcb; --primary-soft:#eaf2ff; --shadow:0 12px 32px rgba(15,23,42,.08); --radius:20px;
+    }
+    [data-theme="dark"] {
+      --bg:#0e1623; --surface:#152133; --surface-2:#1d2a3e; --text:#edf3fb; --muted:#a6b4c8; --border:#2a3a52; --primary:#65a8ff; --primary-soft:#17304d; --shadow:0 12px 32px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:'Inter',sans-serif;background:linear-gradient(180deg,var(--bg),var(--surface-2));color:var(--text)}
+    a{color:inherit} .wrap{max-width:1580px;margin:0 auto;padding:20px}
+    .top{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:18px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero{padding:24px}.hero h1{margin:0 0 10px;font-size:clamp(30px,4vw,50px);line-height:1.02}.hero p{margin:0;color:var(--muted);max-width:75ch}
+    .controls{display:grid;grid-template-columns:1fr 210px 180px auto;gap:12px;margin-top:18px}
+    input,select,button{font:inherit;border-radius:14px;border:1px solid var(--border);padding:12px 14px;background:var(--surface);color:var(--text)}
+    button{cursor:pointer;font-weight:700;border:none;background:var(--primary);color:#fff}.ghost{background:var(--primary-soft);color:var(--primary);border:1px solid var(--border)}
+    .quick{padding:18px;display:flex;flex-direction:column;gap:12px}.quick h2{margin:0;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;border-radius:999px;font-weight:700}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px}.stat small{display:block;color:var(--muted);margin-bottom:6px}.stat strong{font-size:26px}
+    .italy{padding:18px;margin-bottom:18px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.section-title h2{margin:0;font-size:24px}.section-title p{margin:0;color:var(--muted)}
+    .featured-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .favorite{min-height:110px;padding:18px;border-radius:18px;background:linear-gradient(180deg,var(--surface),var(--surface-2));}
+    .favorite .logo{width:48px;height:48px}
+    .favorite .logo img{width:28px;height:28px}
+    .favorite .paper-text strong{font-size:16px}
+    .favorite .paper-text span{font-size:13px}
+    .paper{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px;border:1px solid var(--border);background:var(--surface);border-radius:16px;min-height:78px;transition:.18s ease}
+    .paper:hover{transform:translateY(-2px);border-color:var(--primary);background:var(--primary-soft)}
+    .logo,.flag{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);flex:0 0 auto;overflow:hidden}
+    .logo img,.flag img{width:24px;height:24px;object-fit:contain}
+    .paper-text{min-width:0}.paper-text strong{display:block;font-size:14px;line-height:1.25}.paper-text span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:18px}
+    .sidebar{padding:18px;position:sticky;top:16px;height:fit-content}.sidebar h3{margin:0 0 12px}.country-nav{display:grid;gap:8px;max-height:70vh;overflow:auto}
+    .country-nav a{text-decoration:none;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);font-weight:600}
+    .main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+    .country{overflow:hidden}.country-header{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface-2)}
+    .country-header h3{margin:0;font-size:18px}.country-header small{display:block;color:var(--muted)}
+    .links{padding:10px;display:grid;gap:8px;max-height:640px;overflow:auto}
+    .empty{display:none;padding:32px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--border);border-radius:16px}
+    @media (max-width:1250px){.main{grid-template-columns:repeat(2,minmax(0,1fr))}.featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.controls{grid-template-columns:1fr 1fr}.top,.layout{grid-template-columns:1fr}.sidebar{position:static}}
+    @media (max-width:760px){.main,.stats,.featured-grid,.controls{grid-template-columns:1fr}.wrap{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="top">
+      <div class="card hero">
+        <h1>Home page dei giornali</h1>
+        <p>Una versione più vicina a una vera pagina iniziale di Chrome: ricerca rapida, ordinamento alfabetico automatico, sezione speciale per i giornali italiani e raccolta internazionale organizzata per paese.</p>
+        <div class="controls">
+          <input id="searchInput" type="text" placeholder="Cerca giornale o paese..." aria-label="Cerca giornale o paese">
+          <select id="areaFilter" aria-label="Filtra per area geografica">
+            <option value="all">Tutte le aree</option>
+            <option value="Europa">Europa</option>
+            <option value="Nord America">Nord America</option>
+          </select>
+          <select id="sortMode" aria-label="Ordina risultati">
+            <option value="az">Ordine alfabetico A-Z</option>
+            <option value="za">Ordine alfabetico Z-A</option>
+          </select>
+          <button id="themeToggle" class="ghost" type="button">Tema</button>
+        </div>
+      </div>
+      <aside class="card quick">
+        <h2>Accesso rapido</h2>
+        <div class="chips" id="topItalian"></div>
+      </aside>
+    </section>
+
+    <section class="card italy" id="favoritesSection">
+      <div class="section-title">
+        <div>
+          <h2>Preferiti</h2>
+          <p>Pulsanti grandi per aprire subito le testate principali che vuoi avere sempre a portata di mano.</p>
+        </div>
+      </div>
+      <div id="favoritesGrid" class="featured-grid"></div>
+    </section>
+
+    <section class="stats" aria-label="Statistiche pagina">
+    </section>
+
+    <section class="stats" aria-label="Statistiche pagina">
+      <div class="card stat"><small>Paesi visibili</small><strong id="countryCount">0</strong></div>
+      <div class="card stat"><small>Testate visibili</small><strong id="paperCount">0</strong></div>
+      <div class="card stat"><small>Giornali italiani</small><strong id="italyCount">0</strong></div>
+      <div class="card stat"><small>Aree geografiche</small><strong>2</strong></div>
+    </section>
+
+    <section class="card italy">
+      <div class="section-title">
+        <div>
+          <h2>Giornali italiani</h2>
+          <p>Sezione separata in stile home page per le testate che probabilmente apri più spesso.</p>
+        </div>
+      </div>
+      <div id="italyGrid" class="featured-grid"></div>
+    </section>
+
+    <section class="layout">
+      <aside class="card sidebar">
+        <h3>Paesi</h3>
+        <nav id="countryNav" class="country-nav" aria-label="Navigazione paesi"></nav>
+      </aside>
+      <div>
+        <div id="emptyState" class="empty">Nessun risultato trovato con i filtri attuali.</div>
+        <main id="mainGrid" class="main"></main>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const defaultIcon = 'https://cdn.simpleicons.org/googlenews';
+    const flagBase = 'https://flagcdn.com';
+    const countries = {
+      "Italia": { area:"Europa", flag:"it", items:[
+        ["ANSA","https://www.ansa.it","ansible"],["Corriere della Sera","https://www.corriere.it","googlenews"],["La Repubblica","https://www.repubblica.it","googlenews"],["Il Sole 24 Ore","https://www.ilsole24ore.com","googlenews"],["La Stampa","https://www.lastampa.it","googlenews"],["Il Messaggero","https://www.ilmessaggero.it","googlenews"],["Il Gazzettino","https://www.ilgazzettino.it","googlenews"],["Avvenire","https://www.avvenire.it","googlenews"],["La Nazione","https://www.lanazione.it","googlenews"],["Il Resto del Carlino","https://www.ilrestodelcarlino.it","googlenews"],["Il Giorno","https://www.ilgiorno.it","googlenews"],["Libero","https://www.liberoquotidiano.it","googlenews"],["Il Fatto Quotidiano","https://www.ilfattoquotidiano.it","googlenews"],["Domani","https://www.domani.it","googlenews"],["Il Mattino","https://www.ilmattino.it","googlenews"]
+      ]},
+      "Regno Unito": { area:"Europa", flag:"gb", items:[["Daily Mail","https://www.dailymail.co.uk","dailymotion"],["Daily Mirror","https://www.mirror.co.uk","googlenews"],["Financial Times","https://www.ft.com","googlenews"],["The Guardian","https://www.theguardian.com","theguardian"],["The Independent","https://www.independent.co.uk","googlenews"],["The Sun","https://www.thesun.co.uk","googlenews"],["The Telegraph","https://www.telegraph.co.uk","googlenews"],["The Times","https://www.thetimes.co.uk","googlenews"]]},
+      "Francia": { area:"Europa", flag:"fr", items:[["La Croix","https://www.la-croix.com","googlenews"],["Le Figaro","https://www.lefigaro.fr","googlenews"],["Le Monde","https://www.lemonde.fr","lemonde"],["Le Parisien","https://www.leparisien.fr","googlenews"],["Les Echos","https://www.lesechos.fr","googlenews"],["Libération","https://www.liberation.fr","googlenews"],["Ouest-France","https://www.ouest-france.fr","googlenews"],["Sud Ouest","https://www.sudouest.fr","googlenews"]]},
+      "Spagna": { area:"Europa", flag:"es", items:[["20 Minutos","https://www.20minutos.es","googlenews"],["ABC","https://www.abc.es","abc"],["El Mundo","https://www.elmundo.es","elmundo"],["El País","https://www.elpais.com","elpais"],["La Razón","https://www.larazon.es","googlenews"],["La Vanguardia","https://www.lavanguardia.com","googlenews"],["Público","https://www.publico.es","googlenews"]]},
+      "Germania": { area:"Europa", flag:"de", items:[["Bild","https://www.bild.de","googlenews"],["Der Tagesspiegel","https://www.tagesspiegel.de","googlenews"],["Die Welt","https://www.welt.de","googlenews"],["Die Zeit","https://www.zeit.de","googlenews"],["Frankfurter Allgemeine Zeitung","https://www.faz.net","googlenews"],["Handelsblatt","https://www.handelsblatt.com","googlenews"],["Süddeutsche Zeitung","https://www.sueddeutsche.de","googlenews"]]},
+      "Svizzera": { area:"Europa", flag:"ch", items:[["Blick","https://www.blick.ch","googlenews"],["Der Bund","https://www.derbund.ch","googlenews"],["Le Temps","https://www.letemps.ch","googlenews"],["Neue Zürcher Zeitung","https://www.nzz.ch","googlenews"],["Tages-Anzeiger","https://www.tagesanzeiger.ch","googlenews"],["Tribune de Genève","https://www.tdg.ch","googlenews"]]},
+      "Austria": { area:"Europa", flag:"at", items:[["Der Standard","https://www.standard.at","googlenews"],["Die Presse","https://www.diepresse.com","googlenews"],["Kronen Zeitung","https://www.krone.at","googlenews"],["Kurier","https://kurier.at","googlenews"]]},
+      "Portogallo": { area:"Europa", flag:"pt", items:[["Diário de Notícias","https://www.dn.pt","googlenews"],["Expresso","https://expresso.pt","googlenews"],["Jornal de Notícias","https://www.jn.pt","googlenews"],["Público","https://www.publico.pt","googlenews"]]},
+      "Paesi Bassi": { area:"Europa", flag:"nl", items:[["de Volkskrant","https://www.volkskrant.nl","googlenews"],["De Telegraaf","https://www.telegraaf.nl","googlenews"],["Het Parool","https://www.parool.nl","googlenews"],["NRC","https://www.nrc.nl","googlenews"]]},
+      "Belgio": { area:"Europa", flag:"be", items:[["De Morgen","https://www.demorgen.be","googlenews"],["De Standaard","https://www.standaard.be","googlenews"],["Het Laatste Nieuws","https://www.hln.be","googlenews"],["Le Soir","https://www.lesoir.be","googlenews"]]},
+      "Danimarca": { area:"Europa", flag:"dk", items:[["Berlingske","https://www.berlingske.dk","googlenews"],["Jyllands-Posten","https://jyllands-posten.dk","googlenews"],["Politiken","https://www.politiken.dk","googlenews"]]},
+      "Svezia": { area:"Europa", flag:"se", items:[["Aftonbladet","https://www.aftonbladet.se","googlenews"],["Dagens Nyheter","https://www.dn.se","googlenews"],["Expressen","https://www.expressen.se","googlenews"],["Svenska Dagbladet","https://www.svd.se","googlenews"]]},
+      "Norvegia": { area:"Europa", flag:"no", items:[["Aftenposten","https://www.aftenposten.no","googlenews"],["Dagbladet","https://www.dagbladet.no","googlenews"],["VG","https://www.vg.no","googlenews"]]},
+      "Finlandia": { area:"Europa", flag:"fi", items:[["Helsingin Sanomat","https://www.helsinginsanomat.fi","googlenews"],["Ilta-Sanomat","https://www.is.fi","googlenews"],["Iltalehti","https://www.iltalehti.fi","googlenews"]]},
+      "Polonia": { area:"Europa", flag:"pl", items:[["Dziennik Gazeta Prawna","https://www.dziennik.pl","googlenews"],["Fakt","https://www.fakt.pl","googlenews"],["Gazeta Wyborcza","https://wyborcza.pl","googlenews"],["Rzeczpospolita","https://www.rp.pl","googlenews"]]},
+      "Slovacchia": { area:"Europa", flag:"sk", items:[["Denník N","https://dennikn.sk","googlenews"],["Pravda","https://www.pravda.sk","googlenews"],["SME","https://www.sme.sk","googlenews"]]},
+      "Repubblica Ceca": { area:"Europa", flag:"cz", items:[["Deník","https://www.denik.cz","googlenews"],["Lidové noviny","https://www.lidovky.cz","googlenews"],["Mladá fronta DNES","https://www.idnes.cz","googlenews"]]},
+      "Ungheria": { area:"Europa", flag:"hu", items:[["Magyar Nemzet","https://magyarnemzet.hu","googlenews"],["Népszava","https://www.nepszava.hu","googlenews"]]},
+      "Ucraina": { area:"Europa", flag:"ua", items:[["Kyiv Post","https://www.kyivpost.com","googlenews"],["Ukrainska Pravda","https://www.pravda.com.ua","googlenews"]]},
+      "Europa": { area:"Europa", flag:"eu", items:[["Euronews","https://www.euronews.com","euronews"],["Politico Europe","https://www.politico.eu","politico"],["The European Interest","https://www.europeaninterest.eu","googlenews"]]},
+      "Canada": { area:"Nord America", flag:"ca", items:[["CBC News","https://www.cbc.ca/news","cbc"],["CTV News","https://www.ctvnews.ca","googlenews"],["Calgary Herald","https://calgaryherald.com","googlenews"],["La Presse","https://www.lapresse.ca","lapresse"],["Le Journal de Montréal","https://www.journaldemontreal.com","googlenews"],["Montreal Gazette","https://montrealgazette.com","googlenews"],["National Post","https://nationalpost.com","googlenews"],["Ottawa Citizen","https://ottawacitizen.com","googlenews"],["The Globe and Mail","https://www.theglobeandmail.com","googlenews"],["Toronto Star","https://www.thestar.com","googlenews"],["Vancouver Sun","https://vancouversun.com","googlenews"]]},
+      "Messico": { area:"Nord America", flag:"mx", items:[["El Universal","https://www.eluniversal.com.mx","googlenews"],["El Universal English","https://www.eluniversal.com.mx/english","googlenews"],["Excélsior","https://www.excelsior.com.mx","googlenews"],["La Jornada","https://www.jornada.com.mx","googlenews"],["Milenio","https://www.milenio.com","googlenews"],["Reforma","https://www.reforma.com","googlenews"]]},
+      "Stati Uniti": { area:"Nord America", flag:"us", items:[["Chicago Sun-Times","https://chicago.suntimes.com","googlenews"],["Chicago Tribune","https://www.chicagotribune.com","googlenews"],["Los Angeles Times","https://www.latimes.com","googlenews"],["Miami Herald","https://www.miamiherald.com","googlenews"],["New York Daily News","https://www.nydailynews.com","googlenews"],["New York Post","https://nypost.com","nypost"],["New York Times","https://www.nytimes.com","nytimes"],["Politico","https://www.politico.com","politico"],["San Diego Union-Tribune","https://www.sandiegouniontribune.com","googlenews"],["San Francisco Chronicle","https://www.sfchronicle.com","googlenews"],["Star Tribune","https://www.startribune.com","googlenews"],["The Atlantic","https://www.theatlantic.com","theatlantic"],["The Boston Globe","https://www.bostonglobe.com","googlenews"],["The Columbus Dispatch","https://www.dispatch.com","googlenews"],["The Kansas City Star","https://www.kansascity.com","googlenews"],["The New Yorker","https://www.newyorker.com","newyorker"],["The Philadelphia Inquirer","https://www.inquirer.com","googlenews"],["The Sacramento Bee","https://www.sacbee.com","googlenews"],["The Seattle Times","https://www.seattletimes.com","googlenews"],["The Wall Street Journal","https://www.wsj.com","wsj"],["The Washington Post","https://www.washingtonpost.com","washingtonpost"],["The Washington Times","https://www.washingtontimes.com","googlenews"],["Time","https://time.com","time"],["USA Today","https://www.usatoday.com","usatoday"]]}
+    };
+
+    const topItalianNames = ["Corriere della Sera","La Repubblica","Il Sole 24 Ore","La Stampa","Il Fatto Quotidiano","ANSA"];
+    const favorites = [
+      ["Corriere della Sera", "https://www.corriere.it", "googlenews", "Italia"],
+      ["La Repubblica", "https://www.repubblica.it", "googlenews", "Italia"],
+      ["Il Sole 24 Ore", "https://www.ilsole24ore.com", "googlenews", "Italia"],
+      ["ANSA", "https://www.ansa.it", "ansible", "Italia"],
+      ["New York Times", "https://www.nytimes.com", "nytimes", "Stati Uniti"]
+    ];
+    const searchInput = document.getElementById('searchInput');
+    const areaFilter = document.getElementById('areaFilter');
+    const sortMode = document.getElementById('sortMode');
+    const themeToggle = document.getElementById('themeToggle');
+    const mainGrid = document.getElementById('mainGrid');
+    const countryNav = document.getElementById('countryNav');
+    const emptyState = document.getElementById('emptyState');
+    const italyGrid = document.getElementById('italyGrid');
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    const topItalian = document.getElementById('topItalian');
+    const countryCount = document.getElementById('countryCount');
+    const paperCount = document.getElementById('paperCount');
+    const italyCount = document.getElementById('italyCount');
+
+    function compareText(a, b, mode='az') {
+      const result = a.localeCompare(b, 'it', { sensitivity: 'base' });
+      return mode === 'az' ? result : -result;
+    }
+
+    function iconUrl(slug) {
+      return `https://cdn.simpleicons.org/${slug}`;
+    }
+
+    function flagUrl(code) {
+      return code === 'eu' ? 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg' : `${flagBase}/${code}.svg`;
+    }
+
+    function renderTopItalian() {
+      const items = countries['Italia'].items.filter(([name]) => topItalianNames.includes(name)).sort((a,b) => compareText(a[0], b[0], 'az'));
+      topItalian.innerHTML = items.map(([name, url, slug]) => `
+        <a class="chip" href="${url}" target="_blank" rel="noopener noreferrer">
+          <img src="${iconUrl(slug || 'googlenews')}" alt="" width="18" height="18" loading="lazy">
+          <span>${name}</span>
+        </a>`).join('');
+    }
+
+    function renderItalySection(mode) {
+      const items = [...countries['Italia'].items].sort((a,b) => compareText(a[0], b[0], mode));
+      italyGrid.innerHTML = items.map(([name, url, slug]) => `
+        <a class="paper" href="${url}" target="_blank" rel="noopener noreferrer">
+          <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
+          <div class="paper-text"><strong>${name}</strong><span>Italia</span></div>
+        </a>`).join('');
+      italyCount.textContent = items.length;
+    }
+
+
+    function renderFavorites() {
+      favoritesGrid.innerHTML = favorites.map(([name, url, slug, country]) => `
+        <a class="paper favorite" href="${url}" target="_blank" rel="noopener noreferrer">
+          <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="28" height="28" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
+          <div class="paper-text"><strong>${name}</strong><span>${country}</span></div>
+        </a>`).join('');
+    }
+
+    function render() {
+      const q = searchInput.value.trim().toLowerCase();
+      const area = areaFilter.value;
+      const mode = sortMode.value;
+      mainGrid.innerHTML = '';
+      countryNav.innerHTML = '';
+      let visibleCountries = 0;
+      let visiblePapers = 0;
+
+      const entries = Object.entries(countries)
+        .filter(([country]) => country !== 'Italia')
+        .sort((a,b) => compareText(a[0], b[0], mode));
+
+      for (const [country, data] of entries) {
+        if (area !== 'all' && data.area !== area) continue;
+        const items = [...data.items]
+          .sort((a,b) => compareText(a[0], b[0], mode))
+          .filter(([name]) => (`${name} ${country} ${data.area}`).toLowerCase().includes(q));
+        if (!items.length) continue;
+
+        visibleCountries++;
+        visiblePapers += items.length;
+        const id = `country-${country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+
+        const navLink = document.createElement('a');
+        navLink.href = `#${id}`;
+        navLink.textContent = country;
+        countryNav.appendChild(navLink);
+
+        const section = document.createElement('section');
+        section.className = 'card country';
+        section.id = id;
+        section.innerHTML = `
+          <div class="country-header">
+            <div class="flag"><img src="${flagUrl(data.flag)}" alt="Bandiera ${country}" width="24" height="24" loading="lazy"></div>
+            <div><h3>${country}</h3><small>${data.area} · ${items.length} testate</small></div>
+          </div>
+          <div class="links">
+            ${items.map(([name, url, slug]) => `
+              <a class="paper" href="${url}" target="_blank" rel="noopener noreferrer">
+                <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
+                <div class="paper-text"><strong>${name}</strong><span>${country}</span></div>
+              </a>`).join('')}
+          </div>`;
+        mainGrid.appendChild(section);
+      }
+
+      countryCount.textContent = visibleCountries;
+      paperCount.textContent = visiblePapers + countries['Italia'].items.length;
+      emptyState.style.display = visibleCountries ? 'none' : 'block';
+      renderItalySection(mode);
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
+    searchInput.addEventListener('input', render);
+    areaFilter.addEventListener('change', render);
+    sortMode.addEventListener('change', render);
+
+    renderTopItalian();
+    renderFavorites();
+    render();
+  </script>
+</body>
+</html>
