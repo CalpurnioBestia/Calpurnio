@@ -1,673 +1,182 @@
 <!DOCTYPE html>
 <html lang="it" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Quest</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:#f5f7fb;
-      --surface:#ffffff;
-      --surface-2:#eef3fb;
-      --text:#142033;
-      --muted:#5c6b80;
-      --border:#d8e1ec;
-      --primary:#0b6bcb;
-      --primary-soft:#eaf2ff;
-      --shadow:0 12px 32px rgba(15,23,42,.08);
-      --radius:20px;
-      --good:#0f9d58;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {--bg:#f5f7fb;--bg-overlay:rgba(255,255,255,.06);--surface:#ffffff;--surface-2:#eef3fb;--text:#142033;--muted:#5c6b80;--border:#d8e1ec;--primary:#0b6bcb;--primary-soft:#eaf2ff;--shadow:0 12px 32px rgba(15,23,42,.08);--radius:20px;--good:#0f9d58;}
+[data-theme="dark"] {--bg:#0e1623;--bg-overlay:rgba(255,255,255,.03);--surface:#152133;--surface-2:#1d2a3e;--text:#edf3fb;--muted:#a6b4c8;--border:#2a3a52;--primary:#65a8ff;--primary-soft:#17304d;--shadow:0 12px 32px rgba(0,0,0,.28);--good:#54c47a;}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {margin:0;font-family:'Inter',sans-serif;background:radial-gradient(circle at top left, rgba(11,107,203,.18), transparent 26%),radial-gradient(circle at top right, rgba(84,196,122,.12), transparent 22%),linear-gradient(180deg, #08111f 0%, #0e1726 40%, #121d31 100%);color:var(--text);} a { color:inherit; }
+.wrap { max-width:1580px; margin:0 auto; padding:20px; }
+.skip-link {position:absolute;top:-40px;left:0;background:var(--primary);color:#fff;padding:8px 12px;z-index:100;text-decoration:none;border-radius:0 0 8px 0;box-shadow:0 8px 20px rgba(0,0,0,.18);}
+.skip-link:focus { top:0; }
+*:focus-visible {outline:2px solid var(--primary);outline-offset:2px;}
+.top { display:block; margin-bottom:18px; }
+.card {background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(244,248,255,.94));border:1px solid rgba(255,255,255,.22);border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,.18);backdrop-filter:blur(10px);} [data-theme="dark"] .card {background:linear-gradient(180deg, rgba(21,33,51,.94), rgba(17,26,40,.92));border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.32);backdrop-filter:blur(10px);}
+.hero { padding:28px 28px 24px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between; gap:16px; } 
+.hero::after {content:''; position:absolute; inset:auto -120px -110px auto; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(11,107,203,.22), transparent 68%); pointer-events:none;}
+.brand {
+display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text);
+}
+.brand-logo {
+width:36px; height:36px; border-radius:10px;
+background:linear-gradient(135deg, var(--primary), #1e88e5);
+color:#fff; display:grid; place-items:center;
+font-weight:800; font-size:18px; letter-spacing:-0.04em;
+box-shadow:0 8px 18px rgba(11,107,203,.35);
+}
+.brand-text {
+display:flex; flex-direction:column;
+}
+.brand-title {
+font-weight:800; font-size:16px; line-height:1.1; letter-spacing:-0.02em;
+}
+.brand-subtitle {
+font-size:12px; color:var(--muted);
+}
+.hero h1 {margin:0;font-size:clamp(28px,4.5vw,48px);line-height:1.02;letter-spacing:-0.02em;font-weight:800;}
+.hero p { margin:0; color:var(--muted); max-width:65ch; font-size:14px; line-height:1.5; }
+.controls {display:grid;grid-template-columns:1fr 210px 180px auto;gap:12px;margin-top:18px;}
+input, select, button {font:inherit;border-radius:14px;border:1px solid var(--border);padding:12px 14px;background:var(--surface);color:var(--text);} button {cursor:pointer;font-weight:700;border:none;background:var(--primary);color:#fff;}
+.ghost {background:var(--primary-soft);color:var(--primary);border:1px solid var(--border);}
+.italy { padding:18px; margin-bottom:18px; }
+.section-title {display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
+.section-title h2 { margin:0; font-size:24px; letter-spacing:-0.01em; }
+.section-title p { margin:0; color:var(--muted); font-size:14px; }
+.featured-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;}
+.paper {display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px;border:1px solid var(--border);background:var(--surface);border-radius:16px;min-height:78px;transition:.18s ease;}
+.paper:hover {transform:translateY(-2px);border-color:var(--primary);background:linear-gradient(180deg, rgba(255,255,255,.98), var(--primary-soft));}
+.logo, .flag, .radio-badge, .tv-badge {width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);flex:0 0 auto;overflow:hidden;}
+.logo img, .flag img {width:24px;height:24px;object-fit:contain;}
+.paper-text { min-width:0; }
+.paper-text strong {display:block;font-size:14px;line-height:1.25;}
+.paper-text span {display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.layout {display:grid;grid-template-columns:280px 1fr;gap:18px;}
+.sidebar {padding:18px;position:sticky;top:16px;height:fit-content;}
+.sidebar h3 { margin:0 0 12px; font-size:16px; letter-spacing:-0.01em; }
+.country-nav {display:grid;gap:8px;max-height:70vh;overflow:auto;}
+.country-nav a {text-decoration:none;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border);font-weight:600;}
+.main {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start;}
+.country { overflow:hidden; }
+.country-header {display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface-2);} .country-header h3 { margin:0; font-size:18px; letter-spacing:-0.01em; } .country-header small { display:block; color:var(--muted); font-size:12px; }
+.links {padding:10px;display:grid;gap:8px;grid-template-rows:repeat(3, minmax(0, 1fr));max-height:calc(3 * 78px + 2 * 8px + 20px);overflow:auto;}
+.empty {display:none;padding:32px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--border);border-radius:16px;}
+.radios, .tv {padding:18px;margin-bottom:18px;}
+.radio-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.tv-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.radio-card, .tv-card {display:flex;align-items:flex-start;gap:12px;text-decoration:none;padding:12px 14px;border:1px solid var(--border);background:var(--surface);border-radius:16px;min-height:88px;transition:.18s ease;position:relative;overflow:hidden;}
+.radio-card:hover, .tv-card:hover {transform:translateY(-2px);border-color:var(--primary);background:linear-gradient(180deg, rgba(255,255,255,.98), var(--primary-soft));} .radio-card strong, .tv-card strong {display:block;font-size:14px;line-height:1.25;letter-spacing:-0.01em;} .radio-card span, .tv-card span {display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+.radio-badge, .tv-badge {font-weight:800;color:var(--primary);flex-shrink:0;font-size:18px;display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;}
+.tv-content { min-width:0; flex:1; }
+.podcast-badge { font-size:18px; }
+.player-actions {margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.play-btn {background:var(--primary);color:#fff;border:none;padding:8px 12px;border-radius:12px;font-weight:700;cursor:pointer;}
+.stop-btn {background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:12px;font-weight:700;cursor:pointer;}
+.fallback-btn {display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:12px;background:var(--surface-2);color:var(--text);border:1px solid var(--border);text-decoration:none;font-weight:700;font-size:13px;}
+.fallback-btn:hover {background:var(--primary-soft);border-color:var(--primary);}
+.status {font-size:12px;color:var(--muted);}
+.radio-card.playing {border-color:var(--good);background:linear-gradient(180deg,var(--surface),var(--primary-soft));}
+.radio-card.playing .status {color:var(--good);font-weight:700;}
+.tv-card.error {border-color:#d9534f;background:linear-gradient(180deg,#fff7f7,#fff1f1);}
+.volume-control {display:flex;align-items:center;gap:8px;margin-top:12px;} .volume-control label {font-size:12px;color:var(--muted);} .volume-control input {width:120px;padding:6px;}
+audio { display:none; }
 
-    [data-theme="dark"] {
-      --bg:#0e1623;
-      --surface:#152133;
-      --surface-2:#1d2a3e;
-      --text:#edf3fb;
-      --muted:#a6b4c8;
-      --border:#2a3a52;
-      --primary:#65a8ff;
-      --primary-soft:#17304d;
-      --shadow:0 12px 32px rgba(0,0,0,.28);
-      --good:#54c47a;
-    }
-
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body {
-      margin:0;
-      font-family:'Inter',sans-serif;
-      background:linear-gradient(180deg,var(--bg),var(--surface-2));
-      color:var(--text);
-    }
-
-    a { color:inherit; }
-    .wrap {
-      max-width:1580px;
-      margin:0 auto;
-      padding:20px;
-    }
-
-    .top { display:block; margin-bottom:18px; }
-
-    .card {
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-    }
-
-    .hero { padding:24px; }
-    .hero h1 {
-      margin:0 0 10px;
-      font-size:clamp(30px,4vw,50px);
-      line-height:1.02;
-    }
-    .hero p { margin:0; color:var(--muted); max-width:75ch; }
-
-    .controls {
-      display:grid;
-      grid-template-columns:1fr 210px 180px auto;
-      gap:12px;
-      margin-top:18px;
-    }
-
-    input, select, button {
-      font:inherit;
-      border-radius:14px;
-      border:1px solid var(--border);
-      padding:12px 14px;
-      background:var(--surface);
-      color:var(--text);
-    }
-
-    button {
-      cursor:pointer;
-      font-weight:700;
-      border:none;
-      background:var(--primary);
-      color:#fff;
-    }
-
-    .ghost {
-      background:var(--primary-soft);
-      color:var(--primary);
-      border:1px solid var(--border);
-    }
-
-    .italy { padding:18px; margin-bottom:18px; }
-
-    .section-title {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    .section-title h2 { margin:0; font-size:24px; }
-    .section-title p { margin:0; color:var(--muted); }
-
-    .featured-grid {
-      display:grid;
-      grid-template-columns:repeat(5,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .paper {
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      padding:14px;
-      border:1px solid var(--border);
-      background:var(--surface);
-      border-radius:16px;
-      min-height:78px;
-      transition:.18s ease;
-    }
-
-    .paper:hover {
-      transform:translateY(-2px);
-      border-color:var(--primary);
-      background:var(--primary-soft);
-    }
-
-    .logo, .flag, .radio-badge {
-      width:40px;
-      height:40px;
-      display:grid;
-      place-items:center;
-      border-radius:12px;
-      background:var(--surface-2);
-      border:1px solid var(--border);
-      flex:0 0 auto;
-      overflow:hidden;
-    }
-
-    .logo img, .flag img {
-      width:24px;
-      height:24px;
-      object-fit:contain;
-    }
-
-    .paper-text { min-width:0; }
-    .paper-text strong {
-      display:block;
-      font-size:14px;
-      line-height:1.25;
-    }
-    .paper-text span {
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .layout {
-      display:grid;
-      grid-template-columns:280px 1fr;
-      gap:18px;
-    }
-
-    .sidebar {
-      padding:18px;
-      position:sticky;
-      top:16px;
-      height:fit-content;
-    }
-
-    .sidebar h3 { margin:0 0 12px; }
-
-    .country-nav {
-      display:grid;
-      gap:8px;
-      max-height:70vh;
-      overflow:auto;
-    }
-
-    .country-nav a {
-      text-decoration:none;
-      padding:10px 12px;
-      border-radius:12px;
-      background:var(--surface-2);
-      border:1px solid var(--border);
-      font-weight:600;
-    }
-
-    .main {
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:18px;
-      align-items:start;
-    }
-
-    .country { overflow:hidden; }
-
-    .country-header {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:16px 18px;
-      border-bottom:1px solid var(--border);
-      background:var(--surface-2);
-    }
-
-    .country-header h3 { margin:0; font-size:18px; }
-    .country-header small { display:block; color:var(--muted); }
-
-    .links {
-      padding:10px;
-      display:grid;
-      gap:8px;
-      grid-template-rows:repeat(3, minmax(0, 1fr));
-      max-height:calc(3 * 78px + 2 * 8px + 20px);
-      overflow:auto;
-    }
-
-    .empty {
-      display:none;
-      padding:32px;
-      text-align:center;
-      color:var(--muted);
-      background:var(--surface);
-      border:1px dashed var(--border);
-      border-radius:16px;
-    }
-
-    .radios {
-      padding:18px;
-      margin-bottom:18px;
-    }
-
-    .radio-grid {
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .radio-card {
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      padding:14px 16px;
-      border:1px solid var(--border);
-      background:var(--surface);
-      border-radius:16px;
-      min-height:96px;
-      transition:.18s ease;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .radio-card:hover {
-      transform:translateY(-2px);
-      border-color:var(--primary);
-      background:var(--primary-soft);
-    }
-
-    .radio-card strong {
-      display:block;
-      font-size:14px;
-      line-height:1.25;
-    }
-
-    .radio-card span {
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-    }
-
-    .radio-badge {
-      font-weight:800;
-      color:var(--primary);
-      flex-shrink:0;
-    }
-
-    .podcast-badge { font-size:18px; }
-
-    .player-actions {
-      margin-top:10px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .play-btn {
-      background:var(--primary);
-      color:#fff;
-      border:none;
-      padding:8px 12px;
-      border-radius:12px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .stop-btn {
-      background:var(--surface-2);
-      color:var(--text);
-      border:1px solid var(--border);
-      padding:8px 12px;
-      border-radius:12px;
-      font-weight:700;
-      cursor:pointer;
-    }
-
-    .status {
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .radio-card.playing {
-      border-color:var(--good);
-      background:linear-gradient(180deg,var(--surface),var(--primary-soft));
-    }
-
-    .radio-card.playing .status {
-      color:var(--good);
-      font-weight:700;
-    }
-
-    @media (max-width:1250px) {
-      .main { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .featured-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-      .controls { grid-template-columns:1fr 1fr; }
-      .top, .layout { grid-template-columns:1fr; }
-      .sidebar { position:static; }
-      .radio-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    }
-
-    @media (max-width:760px) {
-      .main, .featured-grid, .controls, .radio-grid { grid-template-columns:1fr; }
-      .wrap { padding:12px; }
-    }
-
-    audio { display:none; }
-  </style>
+@media (max-width:1250px) {.main { grid-template-columns:repeat(2,minmax(0,1fr)); } .featured-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .controls { grid-template-columns:1fr 1fr; } .layout { grid-template-columns:1fr; } .sidebar { position:static; } .radio-grid, .tv-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .hero { flex-direction:column; align-items:flex-start; }}
+@media (max-width:760px) {.main, .featured-grid, .controls, .radio-grid, .tv-grid { grid-template-columns:1fr; } .wrap { padding:12px; } .hero { padding:18px; } .hero h1 { font-size:26px; } .paper, .radio-card, .tv-card { min-height:unset; } .player-actions { flex-wrap:wrap; } .play-btn, .stop-btn, .fallback-btn { width:100%; justify-content:center; } .country-nav { max-height:none; } .brand-logo { width:32px; height:32px; font-size:16px; }}
+@media (prefers-reduced-motion: reduce) {* { transition:none !important; }}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="top">
-      <div class="card hero">
-        <h1>Hub Giornaliero</h1>
-        <p>Una versione più vicina a una vera pagina iniziale di Chrome</p>
-        <div class="controls">
-          <input id="searchInput" type="text" placeholder="Cerca giornale o paese..." aria-label="Cerca giornale o paese">
-          <select id="areaFilter" aria-label="Filtra per area geografica">
-            <option value="all">Tutte le aree</option>
-            <option value="Europa">Europa</option>
-            <option value="Nord America">Nord America</option>
-          </select>
-          <select id="sortMode" aria-label="Ordina risultati">
-            <option value="az">Ordine alfabetico A-Z</option>
-            <option value="za">Ordine alfabetico Z-A</option>
-          </select>
-          <button id="themeToggle" class="ghost" type="button">Tema</button>
-        </div>
-      </div>
-    </section>
+<a href="#mainGrid" class="skip-link">Vai al contenuto</a>
+<div class="wrap">
+<section class="top">
+<div class="card hero">
+<a class="brand" href="#">
+<div class="brand-logo">DQ</div>
+<div class="brand-text">
+<span class="brand-title">Daily Quest</span>
+<span class="brand-subtitle">Hub giornali & TV</span>
+</div>
+</a>
+<div style="flex:1"></div>
+<div style="min-width:220px; max-width:420px;">
+<h1 style="margin:0; font-size:clamp(22px,3vw,32px);">Hub Giornaliero</h1>
+<p style="margin:6px 0 0; max-width:60ch;">Una versione più vicina a una vera pagina iniziale di Chrome</p>
+</div>
+<div class="controls">
+<input id="searchInput" type="text" placeholder="Cerca giornale o paese..." aria-label="Cerca giornale o paese">
+<select id="areaFilter" aria-label="Filtra per area geografica">
+<option value="all">Tutte le aree</option>
+<option value="Europa">Europa</option>
+<option value="Nord America">Nord America</option>
+</select>
+<select id="sortMode" aria-label="Ordina risultati">
+<option value="az">Ordine alfabetico A-Z</option>
+<option value="za">Ordine alfabetico Z-A</option>
+</select>
+<button id="themeToggle" class="ghost" type="button">Tema</button>
+</div>
+</div>
+</section>
 
-    <section class="card radios">
-      <div class="section-title">
-        <div>
-          <h2>Radio e podcast</h2>
-          <p>Ascolto rapido senza cambiare pagina.</p>
-        </div>
-      </div>
+<section class="card radios"><div class="section-title"><div><h2>Radio e podcast</h2><p>Ascolto rapido senza cambiare pagina.</p></div></div><div class="radio-grid"><div class="radio-card" data-stream="radio1"><div class="radio-badge">🇮🇹 1</div><div><strong>Rai Radio 1</strong><span>Italia · Diretta</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Riproduci Rai Radio 1">Play</button><button class="stop-btn" type="button" aria-label="Ferma Rai Radio 1">Stop</button></div><div class="status">Pronto</div></div></div><div class="radio-card" data-stream="radio2"><div class="radio-badge">🇮🇹 2</div><div><strong>Rai Radio 2</strong><span>Italia · Diretta</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Riproduci Rai Radio 2">Play</button><button class="stop-btn" type="button" aria-label="Ferma Rai Radio 2">Stop</button></div><div class="status">Pronto</div></div></div><div class="radio-card" data-stream="radio3"><div class="radio-badge">🇮🇹 3</div><div><strong>Rai Radio 3</strong><span>Italia · Diretta</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Riproduci Rai Radio 3">Play</button><button class="stop-btn" type="button" aria-label="Ferma Rai Radio 3">Stop</button></div><div class="status">Pronto</div></div></div><div class="radio-card" data-stream="npr"><div class="radio-badge">🇺🇸</div><div><strong>NPR News</strong><span>USA · Diretta</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Riproduci NPR News">Play</button><button class="stop-btn" type="button" aria-label="Ferma NPR News">Stop</button></div><div class="status">Pronto</div></div></div><div class="radio-card" data-stream="franceinter"><div class="radio-badge">🇫🇷</div><div><strong>France Inter</strong><span>Francia · Diretta</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Riproduci France Inter">Play</button><button class="stop-btn" type="button" aria-label="Ferma France Inter">Stop</button></div><div class="status">Pronto</div></div></div><div class="radio-card" data-stream="podcast"><div class="radio-badge podcast-badge">🎙️</div><div><strong>Elisa True Crime</strong><span>Podcast</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Apri podcast su Spotify">Apri</button></div><div class="status">Spotify</div></div></div><div class="radio-card" data-stream="spotify-naqp"><div class="radio-badge podcast-badge">🎧</div><div><strong>Non Aprite Quella Podcast</strong><span>Spotify · True Crime</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Apri Non Aprite Quella Podcast su Spotify">Apri</button></div><div class="status">Spotify</div></div></div><div class="radio-card" data-stream="spotify-crime"><div class="radio-badge podcast-badge">🕵️</div><div><strong>Spotify Crime</strong><span>Spotify · Sezione Crime</span><div class="player-actions"><button class="play-btn" type="button" aria-label="Apri la sezione Crime di Spotify">Apri</button></div><div class="status">Spotify</div></div></div></div><div class="volume-control"><label for="volumeControl">Volume</label><input id="volumeControl" type="range" min="0" max="1" step="0.1" value="0.7" aria-label="Controllo volume"></div><audio id="audioPlayer" preload="none"></audio></section>
 
-      <div class="radio-grid">
-        <div class="radio-card" data-stream="radio1">
-          <div class="radio-badge">1</div>
-          <div>
-            <strong>Rai Radio 1</strong>
-            <span>Diretta</span>
-            <div class="player-actions">
-              <button class="play-btn" type="button">Play</button>
-              <button class="stop-btn" type="button">Stop</button>
-            </div>
-            <div class="status">Pronto</div>
-          </div>
-        </div>
+<section class="card tv"><div class="section-title"><div><h2>TV in diretta</h2><p>Guarda Rai e Mediaset in streaming.</p></div></div>
+<div class="tv-grid">
+<div class="tv-card" data-fallback="https://www.raiplay.it/dirette/rai1"><div class="tv-badge">📺 1</div><div class="tv-content"><strong>Rai 1</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://www.raiplay.it/dirette/rai1" target="_blank" rel="noopener noreferrer">Apri RaiPlay</a></div></div></div>
+<div class="tv-card" data-fallback="https://www.raiplay.it/dirette/rai2"><div class="tv-badge">📺 2</div><div class="tv-content"><strong>Rai 2</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://www.raiplay.it/dirette/rai2" target="_blank" rel="noopener noreferrer">Apri RaiPlay</a></div></div></div>
+<div class="tv-card" data-fallback="https://www.raiplay.it/dirette/rai3"><div class="tv-badge">📺 3</div><div class="tv-content"><strong>Rai 3</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://www.raiplay.it/dirette/rai3" target="_blank" rel="noopener noreferrer">Apri RaiPlay</a></div></div></div>
+<div class="tv-card" data-fallback="https://mediasetinfinity.mediaset.it/diretta/canale5_cC5"><div class="tv-badge">5</div><div class="tv-content"><strong>Canale 5</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://mediasetinfinity.mediaset.it/diretta/canale5_cC5" target="_blank" rel="noopener noreferrer">Apri Mediaset Infinity</a></div></div></div>
+<div class="tv-card" data-fallback="https://mediasetinfinity.mediaset.it/diretta/italia1_cI1"><div class="tv-badge">1</div><div class="tv-content"><strong>Italia 1</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://mediasetinfinity.mediaset.it/diretta/italia1_cI1" target="_blank" rel="noopener noreferrer">Apri Mediaset Infinity</a></div></div></div>
+<div class="tv-card" data-fallback="https://mediasetinfinity.mediaset.it/diretta/rete4_cR4"><div class="tv-badge">4</div><div class="tv-content"><strong>Rete 4</strong><span>Italia · Diretta TV</span><div class="player-actions"><a class="fallback-btn" href="https://mediasetinfinity.mediaset.it/diretta/rete4_cR4" target="_blank" rel="noopener noreferrer">Apri Mediaset Infinity</a></div></div></div>
+</div>
+</section>
 
-        <div class="radio-card" data-stream="radio2">
-          <div class="radio-badge">2</div>
-          <div>
-            <strong>Rai Radio 2</strong>
-            <span>Diretta</span>
-            <div class="player-actions">
-              <button class="play-btn" type="button">Play</button>
-              <button class="stop-btn" type="button">Stop</button>
-            </div>
-            <div class="status">Pronto</div>
-          </div>
-        </div>
+<section class="card italy"><div class="section-title"><div><h2>Giornali italiani</h2><p>Sezione separata in stile home page per le testate che probabilmente apri più spesso.</p></div></div><div id="italyGrid" class="featured-grid"></div></section>
 
-        <div class="radio-card" data-stream="radio3">
-          <div class="radio-badge">3</div>
-          <div>
-            <strong>Rai Radio 3</strong>
-            <span>Diretta</span>
-            <div class="player-actions">
-              <button class="play-btn" type="button">Play</button>
-              <button class="stop-btn" type="button">Stop</button>
-            </div>
-            <div class="status">Pronto</div>
-          </div>
-        </div>
+<section class="layout"><aside class="card sidebar"><h3>Paesi</h3><nav id="countryNav" class="country-nav" aria-label="Navigazione paesi"></nav></aside><div><div id="emptyState" class="empty">Nessun risultato trovato con i filtri attuali.</div><main id="mainGrid" class="main"></main></div></section>
+</div>
 
-        <div class="radio-card" data-stream="podcast">
-          <div class="radio-badge podcast-badge">🎙️</div>
-          <div>
-            <strong>Elisa True Crime</strong>
-            <span>Podcast</span>
-            <div class="player-actions">
-              <button class="play-btn" type="button">Apri</button>
-            </div>
-            <div class="status">Spotify</div>
-          </div>
-        </div>
-      </div>
+<script>
+const defaultIcon = 'https://cdn.simpleicons.org/googlenews';
+const flagBase = 'https://flagcdn.com';
+const streams = { radio1:'https://icestreaming.rai.it/1.mp3', radio2:'https://icestreaming.rai.it/2.mp3', radio3:'https://icestreaming.rai.it/3.mp3', npr:'https://npr-ice.streamguys1.com/live.mp3', franceinter:'https://icecast.radiofrance.fr/franceinter-midfi.mp3' };
+const podcastUrl = 'https://open.spotify.com/show/2wpbJ0TmiPerI4xDaV4L9m';
+const spotifyNaqpUrl = 'https://open.spotify.com/show/2wpbJ0TmiPerI4xDaV4L9m';
+const spotifyCrimeUrl = 'https://open.spotify.com/genre/crime';
+const countries = {
+"Italia": { area:"Europa", flag:"it", items:[["ANSA","https://www.ansa.it","ansible"],["Corriere della Sera","https://www.corriere.it","googlenews"],["La Repubblica","https://www.repubblica.it","googlenews"],["Il Sole 24 Ore","https://www.ilsole24ore.com","googlenews"],["La Stampa","https://www.lastampa.it","googlenews"],["Il Messaggero","https://www.ilmessaggero.it","googlenews"],["Il Gazzettino","https://www.ilgazzettino.it","googlenews"],["Avvenire","https://www.avvenire.it","googlenews"],["La Nazione","https://www.lanazione.it","googlenews"],["Il Resto del Carlino","https://www.ilrestodelcarlino.it","googlenews"],["Il Giorno","https://www.ilgiorno.it","googlenews"],["Libero","https://www.liberoquotidiano.it","googlenews"],["Il Fatto Quotidiano","https://www.ilfattoquotidiano.it","googlenews"],["Domani","https://www.domani.it","googlenews"],["Il Mattino","https://www.ilmattino.it","googlenews"]] },
+"Regno Unito": { area:"Europa", flag:"gb", items:[["Daily Mail","https://www.dailymail.co.uk","dailymotion"],["Daily Mirror","https://www.mirror.co.uk","googlenews"],["Financial Times","https://www.ft.com","googlenews"],["The Guardian","https://www.theguardian.com","theguardian"],["The Independent","https://www.independent.co.uk","googlenews"],["The Sun","https://www.thesun.co.uk","googlenews"],["The Telegraph","https://www.telegraph.co.uk","googlenews"],["The Times","https://www.thetimes.co.uk","googlenews"]] },
+"Francia": { area:"Europa", flag:"fr", items:[["La Croix","https://www.la-croix.com","googlenews"],["Le Figaro","https://www.lefigaro.fr","googlenews"],["Le Monde","https://www.lemonde.fr","lemonde"],["Le Parisien","https://www.leparisien.fr","googlenews"],["Les Echos","https://www.lesechos.fr","googlenews"],["Libération","https://www.liberation.fr","googlenews"],["Ouest-France","https://www.ouest-france.fr","googlenews"],["Sud Ouest","https://www.sudouest.fr","googlenews"]] },
+"Spagna": { area:"Europa", flag:"es", items:[["20 Minutos","https://www.20minutos.es","googlenews"],["ABC","https://www.abc.es","abc"],["El Mundo","https://www.elmundo.es","elmundo"],["El País","https://www.elpais.com","elpais"],["La Razón","https://www.larazon.es","googlenews"],["La Vanguardia","https://www.lavanguardia.com","googlenews"],["Público","https://www.publico.es","googlenews"]] },
+"Portogallo": { area:"Europa", flag:"pt", items:[["Diário de Notícias","https://www.dn.pt","googlenews"],["Expresso","https://expresso.pt","googlenews"],["Jornal de Notícias","https://www.jn.pt","googlenews"],["Público","https://www.publico.pt","googlenews"]] },
+"Canada": { area:"Nord America", flag:"ca", items:[["CBC News","https://www.cbc.ca/news","cbc"],["CTV News","https://www.ctvnews.ca","googlenews"],["Calgary Herald","https://calgaryherald.com","googlenews"],["La Presse","https://www.lapresse.ca","lapresse"],["Le Journal de Montréal","https://www.journaldemontreal.com","googlenews"],["Montreal Gazette","https://montrealgazette.com","googlenews"],["National Post","https://nationalpost.com","googlenews"],["Ottawa Citizen","https://ottawacitizen.com","googlenews"],["The Globe and Mail","https://www.theglobeandmail.com","googlenews"],["Toronto Star","https://www.thestar.com","googlenews"],["Vancouver Sun","https://vancouversun.com","googlenews"]] },
+"Stati Uniti": { area:"Nord America", flag:"us", items:[["Chicago Sun-Times","https://chicago.suntimes.com","googlenews"],["Chicago Tribune","https://www.chicagotribune.com","googlenews"],["Los Angeles Times","https://www.latimes.com","googlenews"],["Miami Herald","https://www.miamiherald.com","googlenews"],["New York Daily News","https://www.nydailynews.com","googlenews"],["New York Post","https://nypost.com","nypost"],["New York Times","https://www.nytimes.com","nytimes"],["Politico","https://www.politico.com","politico"],["San Diego Union-Tribune","https://www.sandiegouniontribune.com","googlenews"],["San Francisco Chronicle","https://www.sfchronicle.com","googlenews"],["Star Tribune","https://www.startribune.com","googlenews"],["The Atlantic","https://www.theatlantic.com","theatlantic"],["The Boston Globe","https://www.bostonglobe.com","googlenews"],["The Columbus Dispatch","https://www.dispatch.com","googlenews"],["The Kansas City Star","https://www.kansascity.com","googlenews"],["The New Yorker","https://www.newyorker.com","newyorker"],["The Philadelphia Inquirer","https://www.inquirer.com","googlenews"],["The Sacramento Bee","https://www.sacbee.com","googlenews"],["The Seattle Times","https://www.seattletimes.com","googlenews"],["The Wall Street Journal","https://www.wsj.com","wsj"],["The Washington Post","https://www.washingtonpost.com","washingtonpost"],["The Washington Times","https://www.washingtontimes.com","googlenews"],["Time","https://time.com","time"],["USA Today","https://www.usatoday.com","usatoday"]] }
+};
+const searchInput=document.getElementById('searchInput'), areaFilter=document.getElementById('areaFilter'), sortMode=document.getElementById('sortMode'), themeToggle=document.getElementById('themeToggle'), mainGrid=document.getElementById('mainGrid'), countryNav=document.getElementById('countryNav'), emptyState=document.getElementById('emptyState'), italyGrid=document.getElementById('italyGrid'), audioPlayer=document.getElementById('audioPlayer'), volumeControl=document.getElementById('volumeControl'), radios=[...document.querySelectorAll('.radio-card[data-stream]')];
+let currentPlaying=null;
 
-      <audio id="audioPlayer" preload="none"></audio>
-    </section>
-
-    <section class="card italy">
-      <div class="section-title">
-        <div>
-          <h2>Giornali italiani</h2>
-          <p>Sezione separata in stile home page per le testate che probabilmente apri più spesso.</p>
-        </div>
-      </div>
-      <div id="italyGrid" class="featured-grid"></div>
-    </section>
-
-    <section class="layout">
-      <aside class="card sidebar">
-        <h3>Paesi</h3>
-        <nav id="countryNav" class="country-nav" aria-label="Navigazione paesi"></nav>
-      </aside>
-      <div>
-        <div id="emptyState" class="empty">Nessun risultato trovato con i filtri attuali.</div>
-        <main id="mainGrid" class="main"></main>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const defaultIcon = 'https://cdn.simpleicons.org/googlenews';
-    const flagBase = 'https://flagcdn.com';
-    const streams = {
-      radio1: 'https://icestreaming.rai.it/1.mp3',
-      radio2: 'https://icestreaming.rai.it/2.mp3',
-      radio3: 'https://icestreaming.rai.it/3.mp3'
-    };
-    const podcastUrl = 'https://open.spotify.com/show/5qrDv6O8ON44pXR70z4lPz';
-
-    const countries = {
-      "Italia": { area:"Europa", flag:"it", items:[
-        ["ANSA","https://www.ansa.it","ansible"],["Corriere della Sera","https://www.corriere.it","googlenews"],["La Repubblica","https://www.repubblica.it","googlenews"],["Il Sole 24 Ore","https://www.ilsole24ore.com","googlenews"],["La Stampa","https://www.lastampa.it","googlenews"],["Il Messaggero","https://www.ilmessaggero.it","googlenews"],["Il Gazzettino","https://www.ilgazzettino.it","googlenews"],["Avvenire","https://www.avvenire.it","googlenews"],["La Nazione","https://www.lanazione.it","googlenews"],["Il Resto del Carlino","https://www.ilrestodelcarlino.it","googlenews"],["Il Giorno","https://www.ilgiorno.it","googlenews"],["Libero","https://www.liberoquotidiano.it","googlenews"],["Il Fatto Quotidiano","https://www.ilfattoquotidiano.it","googlenews"],["Domani","https://www.domani.it","googlenews"],["Il Mattino","https://www.ilmattino.it","googlenews"]
-      ]},
-      "Regno Unito": { area:"Europa", flag:"gb", items:[["Daily Mail","https://www.dailymail.co.uk","dailymotion"],["Daily Mirror","https://www.mirror.co.uk","googlenews"],["Financial Times","https://www.ft.com","googlenews"],["The Guardian","https://www.theguardian.com","theguardian"],["The Independent","https://www.independent.co.uk","googlenews"],["The Sun","https://www.thesun.co.uk","googlenews"],["The Telegraph","https://www.telegraph.co.uk","googlenews"],["The Times","https://www.thetimes.co.uk","googlenews"]]},
-      "Francia": { area:"Europa", flag:"fr", items:[["La Croix","https://www.la-croix.com","googlenews"],["Le Figaro","https://www.lefigaro.fr","googlenews"],["Le Monde","https://www.lemonde.fr","lemonde"],["Le Parisien","https://www.leparisien.fr","googlenews"],["Les Echos","https://www.lesechos.fr","googlenews"],["Libération","https://www.liberation.fr","googlenews"],["Ouest-France","https://www.ouest-france.fr","googlenews"],["Sud Ouest","https://www.sudouest.fr","googlenews"]]},
-      "Spagna": { area:"Europa", flag:"es", items:[["20 Minutos","https://www.20minutos.es","googlenews"],["ABC","https://www.abc.es","abc"],["El Mundo","https://www.elmundo.es","elmundo"],["El País","https://www.elpais.com","elpais"],["La Razón","https://www.larazon.es","googlenews"],["La Vanguardia","https://www.lavanguardia.com","googlenews"],["Público","https://www.publico.es","googlenews"]]},
-      "Germania": { area:"Europa", flag:"de", items:[["Bild","https://www.bild.de","googlenews"],["Der Tagesspiegel","https://www.tagesspiegel.de","googlenews"],["Die Welt","https://www.welt.de","googlenews"],["Die Zeit","https://www.zeit.de","googlenews"],["Frankfurter Allgemeine Zeitung","https://www.faz.net","googlenews"],["Handelsblatt","https://www.handelsblatt.com","googlenews"],["Süddeutsche Zeitung","https://www.sueddeutsche.de","googlenews"]]},
-      "Svizzera": { area:"Europa", flag:"ch", items:[["Blick","https://www.blick.ch","googlenews"],["Der Bund","https://www.derbund.ch","googlenews"],["Le Temps","https://www.letemps.ch","googlenews"],["Neue Zürcher Zeitung","https://www.nzz.ch","googlenews"],["Tages-Anzeiger","https://www.tagesanzeiger.ch","googlenews"],["Tribune de Genève","https://www.tdg.ch","googlenews"]]},
-      "Austria": { area:"Europa", flag:"at", items:[["Der Standard","https://www.standard.at","googlenews"],["Die Presse","https://www.diepresse.com","googlenews"],["Kronen Zeitung","https://www.krone.at","googlenews"],["Kurier","https://kurier.at","googlenews"]]},
-      "Portogallo": { area:"Europa", flag:"pt", items:[["Diário de Notícias","https://www.dn.pt","googlenews"],["Expresso","https://expresso.pt","googlenews"],["Jornal de Notícias","https://www.jn.pt","googlenews"],["Público","https://www.publico.pt","googlenews"]]},
-      "Paesi Bassi": { area:"Europa", flag:"nl", items:[["de Volkskrant","https://www.volkskrant.nl","googlenews"],["De Telegraaf","https://www.telegraaf.nl","googlenews"],["Het Parool","https://www.parool.nl","googlenews"],["NRC","https://www.nrc.nl","googlenews"]]},
-      "Belgio": { area:"Europa", flag:"be", items:[["De Morgen","https://www.demorgen.be","googlenews"],["De Standaard","https://www.standaard.be","googlenews"],["Het Laatste Nieuws","https://www.hln.be","googlenews"],["Le Soir","https://www.lesoir.be","googlenews"]]},
-      "Danimarca": { area:"Europa", flag:"dk", items:[["Berlingske","https://www.berlingske.dk","googlenews"],["Jyllands-Posten","https://jyllands-posten.dk","googlenews"],["Politiken","https://www.politiken.dk","googlenews"]]},
-      "Svezia": { area:"Europa", flag:"se", items:[["Aftonbladet","https://www.aftonbladet.se","googlenews"],["Dagens Nyheter","https://www.dn.se","googlenews"],["Expressen","https://www.expressen.se","googlenews"],["Svenska Dagbladet","https://www.svd.se","googlenews"]]},
-      "Norvegia": { area:"Europa", flag:"no", items:[["Aftenposten","https://www.aftenposten.no","googlenews"],["Dagbladet","https://www.dagbladet.no","googlenews"],["VG","https://www.vg.no","googlenews"]]},
-      "Finlandia": { area:"Europa", flag:"fi", items:[["Helsingin Sanomat","https://www.helsinginsanomat.fi","googlenews"],["Ilta-Sanomat","https://www.is.fi","googlenews"],["Iltalehti","https://www.iltalehti.fi","googlenews"]]},
-      "Polonia": { area:"Europa", flag:"pl", items:[["Dziennik Gazeta Prawna","https://www.dziennik.pl","googlenews"],["Fakt","https://www.fakt.pl","googlenews"],["Gazeta Wyborcza","https://wyborcza.pl","googlenews"],["Rzeczpospolita","https://www.rp.pl","googlenews"]]},
-      "Slovacchia": { area:"Europa", flag:"sk", items:[["Denník N","https://dennikn.sk","googlenews"],["Pravda","https://www.pravda.sk","googlenews"],["SME","https://www.sme.sk","googlenews"]]},
-      "Repubblica Ceca": { area:"Europa", flag:"cz", items:[["Deník","https://www.denik.cz","googlenews"],["Lidové noviny","https://www.lidovky.cz","googlenews"],["Mladá fronta DNES","https://www.idnes.cz","googlenews"]]},
-      "Ungheria": { area:"Europa", flag:"hu", items:[["Magyar Nemzet","https://magyarnemzet.hu","googlenews"],["Népszava","https://www.nepszava.hu","googlenews"]]},
-      "Ucraina": { area:"Europa", flag:"ua", items:[["Kyiv Post","https://www.kyivpost.com","googlenews"],["Ukrainska Pravda","https://www.pravda.com.ua","googlenews"]]},
-      "Europa": { area:"Europa", flag:"eu", items:[["Euronews","https://www.euronews.com","euronews"],["Politico Europe","https://www.politico.eu","politico"],["The European Interest","https://www.europeaninterest.eu","googlenews"]]},
-      "Canada": { area:"Nord America", flag:"ca", items:[["CBC News","https://www.cbc.ca/news","cbc"],["CTV News","https://www.ctvnews.ca","googlenews"],["Calgary Herald","https://calgaryherald.com","googlenews"],["La Presse","https://www.lapresse.ca","lapresse"],["Le Journal de Montréal","https://www.journaldemontreal.com","googlenews"],["Montreal Gazette","https://montrealgazette.com","googlenews"],["National Post","https://nationalpost.com","googlenews"],["Ottawa Citizen","https://ottawacitizen.com","googlenews"],["The Globe and Mail","https://www.theglobeandmail.com","googlenews"],["Toronto Star","https://www.thestar.com","googlenews"],["Vancouver Sun","https://vancouversun.com","googlenews"]]},
-      "Messico": { area:"Nord America", flag:"mx", items:[["El Universal","https://www.eluniversal.com.mx","googlenews"],["El Universal English","https://www.eluniversal.com.mx/english","googlenews"],["Excélsior","https://www.excelsior.com.mx","googlenews"],["La Jornada","https://www.jornada.com.mx","googlenews"],["Milenio","https://www.milenio.com","googlenews"],["Reforma","https://www.reforma.com","googlenews"]]},
-      "Stati Uniti": { area:"Nord America", flag:"us", items:[["Chicago Sun-Times","https://chicago.suntimes.com","googlenews"],["Chicago Tribune","https://www.chicagotribune.com","googlenews"],["Los Angeles Times","https://www.latimes.com","googlenews"],["Miami Herald","https://www.miamiherald.com","googlenews"],["New York Daily News","https://www.nydailynews.com","googlenews"],["New York Post","https://nypost.com","nypost"],["New York Times","https://www.nytimes.com","nytimes"],["Politico","https://www.politico.com","politico"],["San Diego Union-Tribune","https://www.sandiegouniontribune.com","googlenews"],["San Francisco Chronicle","https://www.sfchronicle.com","googlenews"],["Star Tribune","https://www.startribune.com","googlenews"],["The Atlantic","https://www.theatlantic.com","theatlantic"],["The Boston Globe","https://www.bostonglobe.com","googlenews"],["The Columbus Dispatch","https://www.dispatch.com","googlenews"],["The Kansas City Star","https://www.kansascity.com","googlenews"],["The New Yorker","https://www.newyorker.com","newyorker"],["The Philadelphia Inquirer","https://www.inquirer.com","googlenews"],["The Sacramento Bee","https://www.sacbee.com","googlenews"],["The Seattle Times","https://www.seattletimes.com","googlenews"],["The Wall Street Journal","https://www.wsj.com","wsj"],["The Washington Post","https://www.washingtonpost.com","washingtonpost"],["The Washington Times","https://www.washingtontimes.com","googlenews"],["Time","https://time.com","time"],["USA Today","https://www.usatoday.com","usatoday"]]}
-    };
-
-    const searchInput = document.getElementById('searchInput');
-    const areaFilter = document.getElementById('areaFilter');
-    const sortMode = document.getElementById('sortMode');
-    const themeToggle = document.getElementById('themeToggle');
-    const mainGrid = document.getElementById('mainGrid');
-    const countryNav = document.getElementById('countryNav');
-    const emptyState = document.getElementById('emptyState');
-    const italyGrid = document.getElementById('italyGrid');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const radios = [...document.querySelectorAll('.radio-card[data-stream]')];
-
-    let currentPlaying = null;
-
-    function compareText(a, b, mode='az') {
-      const result = a.localeCompare(b, 'it', { sensitivity: 'base' });
-      return mode === 'az' ? result : -result;
-    }
-
-    function iconUrl(slug) {
-      return `https://cdn.simpleicons.org/${slug}`;
-    }
-
-    function flagUrl(code) {
-      return code === 'eu' ? 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg' : `${flagBase}/${code}.svg`;
-    }
-
-    function renderItalySection(mode) {
-      const items = [...countries['Italia'].items].sort((a,b) => compareText(a[0], b[0], mode));
-      italyGrid.innerHTML = items.map(([name, url, slug]) => `
-        <a class="paper" href="${url}" target="_blank" rel="noopener noreferrer">
-          <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
-          <div class="paper-text"><strong>${name}</strong><span>Italia</span></div>
-        </a>`).join('');
-    }
-
-    function render() {
-      const q = searchInput.value.trim().toLowerCase();
-      const area = areaFilter.value;
-      const mode = sortMode.value;
-      mainGrid.innerHTML = '';
-      countryNav.innerHTML = '';
-      let visibleCountries = 0;
-
-      const entries = Object.entries(countries)
-        .filter(([country]) => country !== 'Italia')
-        .sort((a,b) => compareText(a[0], b[0], mode));
-
-      for (const [country, data] of entries) {
-        if (area !== 'all' && data.area !== area) continue;
-        const items = [...data.items]
-          .sort((a,b) => compareText(a[0], b[0], mode))
-          .filter(([name]) => (`${name} ${country} ${data.area}`).toLowerCase().includes(q));
-        if (!items.length) continue;
-
-        visibleCountries++;
-        const id = `country-${country.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-
-        const navLink = document.createElement('a');
-        navLink.href = `#${id}`;
-        navLink.textContent = country;
-        countryNav.appendChild(navLink);
-
-        const section = document.createElement('section');
-        section.className = 'card country';
-        section.id = id;
-        section.innerHTML = `
-          <div class="country-header">
-            <div class="flag"><img src="${flagUrl(data.flag)}" alt="Bandiera ${country}" width="24" height="24" loading="lazy"></div>
-            <div><h3>${country}</h3><small>${data.area} · ${items.length} testate</small></div>
-          </div>
-          <div class="links">
-            ${items.map(([name, url, slug]) => `
-              <a class="paper" href="${url}" target="_blank" rel="noopener noreferrer">
-                <div class="logo"><img src="${iconUrl(slug || 'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.src='${defaultIcon}'"></div>
-                <div class="paper-text"><strong>${name}</strong><span>${country}</span></div>
-              </a>`).join('')}
-          </div>`;
-        mainGrid.appendChild(section);
-      }
-
-      emptyState.style.display = visibleCountries ? 'none' : 'block';
-      renderItalySection(mode);
-    }
-
-    function setPlaying(card, label) {
-      radios.forEach(r => r.classList.remove('playing'));
-      if (card) card.classList.add('playing');
-      card.querySelector('.status').textContent = label;
-    }
-
-    radios.forEach(card => {
-      const playBtn = card.querySelector('.play-btn');
-      const stopBtn = card.querySelector('.stop-btn');
-      const key = card.dataset.stream;
-
-      playBtn.addEventListener('click', async () => {
-        if (key === 'podcast') {
-          window.open(podcastUrl, '_blank', 'noopener');
-          return;
-        }
-
-        const url = streams[key];
-        if (!url) return;
-
-        if (currentPlaying === key && !audioPlayer.paused) {
-          audioPlayer.pause();
-          setPlaying(card, 'In pausa');
-          playBtn.textContent = 'Play';
-          currentPlaying = null;
-          return;
-        }
-
-        audioPlayer.src = url;
-        try {
-          await audioPlayer.play();
-          currentPlaying = key;
-          radios.forEach(r => {
-            const btn = r.querySelector('.play-btn');
-            if (r === card) {
-              btn.textContent = 'Pause';
-              setPlaying(r, 'In riproduzione');
-            } else {
-              btn.textContent = 'Play';
-              r.classList.remove('playing');
-              const s = r.querySelector('.status');
-              if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
-            }
-          });
-        } catch (e) {
-          setPlaying(card, 'Riproduzione non avviata');
-        }
-      });
-
-      stopBtn?.addEventListener('click', () => {
-        if (key === 'podcast') return;
-        audioPlayer.pause();
-        audioPlayer.removeAttribute('src');
-        audioPlayer.load();
-        currentPlaying = null;
-        radios.forEach(r => {
-          r.classList.remove('playing');
-          const btn = r.querySelector('.play-btn');
-          if (btn) btn.textContent = 'Play';
-          const s = r.querySelector('.status');
-          if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
-        });
-      });
-    });
-
-    audioPlayer.addEventListener('ended', () => {
-      currentPlaying = null;
-      radios.forEach(r => {
-        const btn = r.querySelector('.play-btn');
-        if (btn) btn.textContent = 'Play';
-        r.classList.remove('playing');
-        const s = r.querySelector('.status');
-        if (s) s.textContent = r.dataset.stream === 'podcast' ? 'Spotify' : 'Pronto';
-      });
-    });
-
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    });
-
-    searchInput.addEventListener('input', render);
-    areaFilter.addEventListener('change', render);
-    sortMode.addEventListener('change', render);
-
-    render();
-  </script>
+function savePreferences(){localStorage.setItem('dq-theme',document.documentElement.dataset.theme);localStorage.setItem('dq-area',areaFilter.value);localStorage.setItem('dq-sort',sortMode.value);localStorage.setItem('dq-volume',volumeControl.value);}
+function loadPreferences(){const theme=localStorage.getItem('dq-theme')||'light', area=localStorage.getItem('dq-area')||'all', sort=localStorage.getItem('dq-sort')||'az', volume=localStorage.getItem('dq-volume')||'0.7';document.documentElement.dataset.theme=theme;areaFilter.value=area;sortMode.value=sort;volumeControl.value=volume;audioPlayer.volume=parseFloat(volume);}
+function compareText(a,b,mode='az'){const result=a.localeCompare(b,'it',{sensitivity:'base'});return mode==='az'?result:-result;}
+function iconUrl(slug){return `https://cdn.simpleicons.org/${slug}`;}
+function flagUrl(code){return code==='eu'?'https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg':`${flagBase}/${code}.svg`;}
+function renderItalySection(mode){const items=[...countries['Italia'].items].sort((a,b)=>compareText(a[0],b[0],mode));italyGrid.innerHTML=items.map(([name,url,slug])=>`<a class="paper" href="${url}" target="_blank" rel="noopener noreferrer"><div class="logo"><img src="${iconUrl(slug||'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.onerror=null; this.src='${defaultIcon}'"></div><div class="paper-text"><strong>${name}</strong><span>Italia</span></div></a>`).join('');}
+function render(){const q=searchInput.value.trim().toLowerCase(), area=areaFilter.value, mode=sortMode.value;mainGrid.innerHTML='';countryNav.innerHTML='';let visibleCountries=0;const entries=Object.entries(countries).filter(([country])=>country!=='Italia').sort((a,b)=>compareText(a[0],b[0],mode));for(const [country,data] of entries){if(area!=='all'&&data.area!==area) continue;const items=[...data.items].sort((a,b)=>compareText(a[0],b[0],mode)).filter(([name])=>(`${name} ${country} ${data.area}`).toLowerCase().includes(q));if(!items.length) continue;visibleCountries++;const id=`country-${country.toLowerCase().replace(/[^a-z0-9]+/g,'-')}`;const navLink=document.createElement('a');navLink.href=`#${id}`;navLink.textContent=country;countryNav.appendChild(navLink);const section=document.createElement('section');section.className='card country';section.id=id;section.innerHTML=`<div class="country-header"><div class="flag"><img src="${flagUrl(data.flag)}" alt="Bandiera ${country}" width="24" height="24" loading="lazy"></div><div><h3>${country}</h3><small>${data.area} · ${items.length} testate</small></div></div><div class="links">${items.map(([name,url,slug])=>`<a class="paper" href="${url}" target="_blank" rel="noopener noreferrer"><div class="logo"><img src="${iconUrl(slug||'googlenews')}" alt="" width="24" height="24" loading="lazy" onerror="this.onerror=null; this.src='${defaultIcon}'"></div><div class="paper-text"><strong>${name}</strong><span>${country}</span></div></a>`).join('')}</div>`;mainGrid.appendChild(section);}emptyState.style.display=visibleCountries?'none':'block';renderItalySection(mode);}
+function setPlaying(card,label){radios.forEach(r=>r.classList.remove('playing'));if(card) card.classList.add('playing');const s=card.querySelector('.status');if(s) s.textContent=label;}
+radios.forEach(card=>{const playBtn=card.querySelector('.play-btn'), stopBtn=card.querySelector('.stop-btn'), key=card.dataset.stream;playBtn.addEventListener('click',async()=>{if(key==='podcast'){window.open(podcastUrl,'_blank','noopener');return;}if(key==='spotify-naqp'){window.open(spotifyNaqpUrl,'_blank','noopener');return;}if(key==='spotify-crime'){window.open(spotifyCrimeUrl,'_blank','noopener');return;}const url=streams[key];if(!url) return;if(currentPlaying===key&&!audioPlayer.paused){audioPlayer.pause();setPlaying(card,'In pausa');playBtn.textContent='Play';currentPlaying=null;return;}audioPlayer.src=url;try{await audioPlayer.play();currentPlaying=key;radios.forEach(r=>{const btn=r.querySelector('.play-btn');if(r===card){btn.textContent='Pause';setPlaying(r,'In riproduzione');}else{btn.textContent='Play';r.classList.remove('playing');const s=r.querySelector('.status');if(s) s.textContent=(r.dataset.stream==='podcast'||r.dataset.stream==='spotify-naqp'||r.dataset.stream==='spotify-crime')?'Spotify':'Pronto';}});}catch(e){setPlaying(card,'Riproduzione non avviata');}});stopBtn?.addEventListener('click',()=>{if(key==='podcast'||key==='spotify-naqp'||key==='spotify-crime') return;audioPlayer.pause();audioPlayer.removeAttribute('src');audioPlayer.load();currentPlaying=null;radios.forEach(r=>{r.classList.remove('playing');const btn=r.querySelector('.play-btn');if(btn) btn.textContent='Play';const s=r.querySelector('.status');if(s) s.textContent=(r.dataset.stream==='podcast'||r.dataset.stream==='spotify-naqp'||r.dataset.stream==='spotify-crime')?'Spotify':'Pronto';});});});
+audioPlayer.addEventListener('ended',()=>{currentPlaying=null;radios.forEach(r=>{const btn=r.querySelector('.play-btn');if(btn) btn.textContent='Play';r.classList.remove('playing');const s=r.querySelector('.status');if(s) s.textContent=(r.dataset.stream==='podcast'||r.dataset.stream==='spotify-naqp'||r.dataset.stream==='spotify-crime')?'Spotify':'Pronto';});});
+audioPlayer.addEventListener('error',(e)=>{const card=document.querySelector(`.radio-card[data-stream="${currentPlaying}"]`);if(card){card.querySelector('.status').textContent='Stream non disponibile';card.classList.remove('playing');card.querySelector('.play-btn').textContent='Play';}currentPlaying=null;console.error('Stream error:',e.target.error);});
+volumeControl.addEventListener('input',(e)=>{audioPlayer.volume=e.target.value;savePreferences();});
+themeToggle.addEventListener('click',()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';savePreferences();});
+searchInput.addEventListener('input',render);areaFilter.addEventListener('change',()=>{render();savePreferences();});sortMode.addEventListener('change',()=>{render();savePreferences();});
+loadPreferences();render();
+</script>
 </body>
 </html>
